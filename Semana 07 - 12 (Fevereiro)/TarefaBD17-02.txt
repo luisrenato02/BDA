@@ -1,0 +1,52 @@
+Menu principal
+SISTEMAS GERENCIADORES DE BANCO DE DADOS
+CLASS_TE00659IT-N-TE-0120221
+Material Aula 10/02
+Glauco Kiss Leme
+•
+11 de fev.
+Pessoal, segue o link da aula gravada e o modelo que iniciamos ontem.
+
+
+Como atividade eu preciso que por favor vocês acrescentem novos insights interessantes com os dados que mapeamos.
+
+
+Abs
+
+sfc-tdtm-svx (2022-02-10 14:36 GMT-8)
+Vídeo
+
+modelo.txt
+Texto
+Comentários da turma
+
+Material Aula 10/02
+MUSICA
+		Nome da Musica	Album	Artista/Banda	Genero	Letra da musica	Tempo da musica
+		Data de Lancamento	Tag		Foto do Artista/Banda	Capa do Disco
+
+USUARIO
+	Nome do usuario		Email	Cidade/UF	Data Nascimento		Genero (sexo), Profissao
+	Glauco				glk		braga		01/01/2000			M				Professor U
+	
+UTILIZACAO
+		Data/Hora	Nome de Usuário		Nome da Musica	Tempo de Execucao	Lat/Log	Volume
+		10/02 15:0	Glauco				É o amor		00:10				125,548	30%
+		10/02 15:20 Glauco				November Rain	05:30				125,548	45%
+		10/02 15:26 Glauco				November Rain	05:30				125,548	45%
+
+
+? O que é possível extrair de insights?
+
+Pegar as músicas em que houve 90% ou mais de execução e partir disso é possível:
+	Prever o gosto pela determinada músicas
+	Prever o gosto pelo Artista/Banda
+	Prever o gosto pelo Gênero
+	
+Qtd de vezes ele escutou a música 
+        Propor menos vezes, pois sabe que ele irá buscar a música
+        Prever o estilo musical
+        Indica que ele pode gostar de mais músicas desse artista
+
+Utilizar a experiencia músical de pessoal com gosto similares para propor novas músicas (recomendação)
+
