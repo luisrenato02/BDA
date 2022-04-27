@@ -1,0 +1,167 @@
+Menu principal
+SISTEMAS GERENCIADORES DE BANCO DE DADOS
+CLASS_TE00659IT-N-TE-0120221
+Prática de Competências X
+Glauco Kiss Leme
+•
+31 de mar. Editado às 31 de mar.
+/*
+use BD_AulaJoin
+
+1) Melhore a função fnFormatarCPF de acodo com o exercicio 1 do mão na massa do slide da aula de hoje.
+
+2) Crie uma função scalar chamado fnDataBR que formata a data por exemplo: 2022-03-31 para 31/03/2022
+
+3) Crie uma função scalar chamado fnCalculaImpostoRenda com as seguintes regras:
+    Se o valor for menor do que R$ 1000, então não tem imposto
+    Se o valor estiver entre 1000 e 1999, então o imposto é de 10%
+    Se o valor estiver entre 2000 e 4999, então o imposto é de 15%
+    Se o valor for maior ou igual à 5000, então o imposto é de 20%
+
+4) Crie uma função que retorna tabela que retorne os seguintes dados
+    IDFuncionario, Nome do Funcionario, CPF Formatado,
+    Nome da Cidade com letra maiuscula, Sigla do Estado,
+    Nome do Cargo, Data de Contratação no formato brasileiro,
+    Salario descontado do imposto (use a função do exercício 3),
+    Qtd em dias entre a data de contratação e o dia atual
+*/
+Comentários da turma
+Seus trabalhos
+Devolvido
+
+Functio.sql
+SQL
+Comentários particulares
+--1) Melhore a função fnFormatarCPF de acodo com o exercicio 1 do mão na massa do slide da aula de hoje.
+
+create function dbo.fnFormataCPF
+(
+    @CPF char(11)
+)
+
+returns char(14) as
+   begin
+
+      declare @retorno char(14)
+      set @retorno = left(@CPF,3) + '.' + SUBSTRING(@CPF, 4,3) + '.' + SUBSTRING(@CPF,7,3) + '-' + RIGHT(@CPF, 2)
+
+      return @retorno
+   end
+
+
+select dbo.fnFormataCPF ('45693160858')
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--2) Crie uma função scalar chamado fnDataBR que formata a data por exemplo: 2022-03-31 para 31/03/2022
+
+create function dbo.fnData()
+
+   returns char(10) as
+
+   begin
+
+          declare @DataBr char(10)
+          set @DataBr = (convert(char(10), getdate(),103))
+
+          return @DataBr
+   end
+
+
+select dbo.fnData()
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--3) Crie uma função scalar chamado fnCalculaImpostoRenda com as seguintes regras:
+
+create function dbo.fnCalculaImpostoRenda
+(
+@Imposto money
+)
+returns money as
+   begin
+      
+	  declare @ImpostoVar money
+	  set @ImpostoVar = @Imposto
+
+	
+select  @ImpostoVar = case
+		     when @ImpostoVar<1000 then (0)
+		     when @ImpostoVar>=1000 and @ImpostoVar<1999 then (@ImpostoVar*0.1)
+		     when @ImpostoVar>=1999 and @ImpostoVar<5000 then (@ImpostoVar*0.15)
+		     when @ImpostoVar>=5000 then (@ImpostoVar*0.2)
+		 end
+			
+
+		return @ImpostoVar
+ 
+ end
+
+ select dbo.fnCalculaImpostoRenda(1998)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*4) Crie uma função que retorna tabela que retorne os seguintes dados
+    IDFuncionario, Nome do Funcionario, CPF Formatado,
+    Nome da Cidade com letra maiuscula, Sigla do Estado,
+    Nome do Cargo, Data de Contratação no formato brasileiro,
+    Salario descontado do imposto (use a função do exercício 3),
+    Qtd em dias entre a data de contratação e o dia atual
+*/
+
+
+
+create function dbo.fnFormataTabela
+ (
+ @IDFuncionario int
+ )
+ returns @TabelaFunc table 
+ ( 
+ IDFuncionario int,
+ CPF char(14),
+ NomeFuncionario varchar(50),
+ NomeCidade varchar(25),
+ Estado char(2),
+ Cargo varchar(30),
+ DataContratacao date,
+ SalarioImpostoDescontado money,
+ QtdDiaContratado int
+ )
+ as
+ begin
+
+
+
+
+ insert into @TabelaFunc 
+
+ select 
+f.IDFuncionario,
+dbo.fnFormataCPF(f.CPF), 
+left(upper(f.NomeFuncionario), 1)+SUBSTRING(f.NomeFuncionario,2,len(f.NomeFuncionario)),
+upper(c.NomeCidade),
+e.SiglaEstado,
+car.NomeCargo,
+convert(char(10), (f.DataContratacao),103),
+car.Salario-dbo.fnCalculaImpostoRenda(car.Salario),
+datediff(day,f.DataContratacao,getdate())
+
+from Funcionario f inner join CIDADE c
+on f.IDFuncionario = c.IDCidade
+inner join ESTADO e
+on e.IDEstado = c.IDCidade
+inner join Cargo car
+on car.IDCargo = f.IDFuncionario
+
+where IDFuncionario = @IDFuncionario
+ 
+ 
+ return
+ end
+
+
+select * from dbo.fnFormataTabela(2)
+Functio.sql
+Exibindo Functio.sql.
